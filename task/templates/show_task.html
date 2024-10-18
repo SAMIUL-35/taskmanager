@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3 class="text-center container mt-3 mb-3">Assigned TASK LIST</h3>
+<div class="container">
+    <div class="row g-3">  
+        {% for task in tasks %}
+        <div class="col-md-4 mb-4">  
+            <div class="card border border-1 border-info" style="height: 350px;"> 
+                <h5 class="card-header">{{ task.task_title }}</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>ID:</strong> {{ task.id }}</li>
+                    <li class="list-group-item"><strong>Description:</strong> {{ task.task_description }}</li>
+                    <li class="list-group-item"><strong>Date:</strong> {{ task.assign_date }}</li>
+                    <li class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <strong class="me-2">Category:</strong> 
+                            <div class="mt-2 ms-3">
+                                {% for category in task.categories.all %}
+                                    <button disabled class="btn btn-success btn-sm me-2 text-light">{{ category.category_name }}</button>
+                                {% empty %}
+                                    <span>No categories assigned</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="card-footer">
+                    {% if task.is_Completed %}
+                        <span class="text-success d-flex justify-content-center align-items-center">Completed</span>
+                    {% else %}
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'edit_task' task.id %}" class="btn btn-success btn-sm">Edit Task</a>
+                            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Delete Task</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
